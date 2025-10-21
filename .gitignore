@@ -1,0 +1,27 @@
+# OS/editor junk
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Local outputs
+reports/
+out.*
+*.json
+*.csv
+*.log
+
+# Keep policy + samples tracked
+!policy.json
+samples/**
+
+# Baseline is environment-specific (don’t commit)
+baseline.json
+
+# PowerShell temp
+*.ps1xml
+*.psc1
+
+# Archives
+*.zip
+*.7z
