@@ -28,6 +28,15 @@ function Normalize-Policy {
   $p
 }
 
+function Merge-Hashtable {
+  param([hashtable]$Base, [hashtable]$Overlay)
+  if (-not $Base)    { $Base    = @{} }
+  if (-not $Overlay) { $Overlay = @{} }
+  $out = @{} + $Base
+  foreach ($k in $Overlay.Keys) { $out[$k] = $Overlay[$k] }  # overlay wins
+  $out
+}
+
 function Load-Policy {
   param([string]$Path)
   $base = @{
@@ -44,8 +53,8 @@ function Load-Policy {
     $raw = Get-Content -Raw -LiteralPath $Path | ConvertFrom-Json -AsHashtable
     # shallow merges for convenience
     if ($raw.windowHours)           { $base.windowHours = [int]$raw.windowHours }
-    if ($raw.businessHours)         { $base.businessHours = @{} + $base.businessHours + $raw.businessHours }
-    if ($raw.rules)                 { $base.rules = @{} + $base.rules + $raw.rules }
+    if ($raw.businessHours) { $base.businessHours = Merge-Hashtable $base.businessHours $raw.businessHours }
+    if ($raw.rules)         { $base.rules         = Merge-Hashtable $base.rules         $raw.rules }
   }
   Normalize-Policy $base
 }
@@ -116,7 +125,6 @@ function Detect-Anomalies {
       $times = $g.Group.TimeCreated | Sort-Object
       if ($times.Count -eq 0) { continue }
       $first = $times[0]; $last = $times[-1]
-      # simple sliding-window approx
       $windowCount = ($times | Where-Object { $_ -ge $last.AddMinutes(-$span) }).Count
       if ($windowCount -ge $thr) {
         $findings += [pscustomobject]@{
@@ -154,7 +162,7 @@ function Detect-Anomalies {
     $sev  = $rules.OffHoursAdmin.sev
     $bh   = $Policy.businessHours
     $adminish = $E | Where-Object {
-      ($_ .Id -eq 4672) -or (($_.Id -eq 4624) -and ($_.LogonType -in 2,10))
+      ($_.Id -eq 4672) -or (($_.Id -eq 4624) -and ($_.LogonType -in 2,10))
     }
     foreach($ev in $adminish){
       if (Is-OffHours $ev.TimeCreated $bh) {
@@ -201,7 +209,7 @@ function Detect-Anomalies {
 $pol = Load-Policy -Path $Policy
 if ($PSBoundParameters.ContainsKey('WindowHours')) { $pol.windowHours = [int]$WindowHours }
 
-# targets (local-only scaffold; expand later if you want remoting)
+# targets (local-only scaffold; expand further if you want remoting)
 $targets=@()
 if     ($HostsCsv)     { $targets += (Import-Csv -LiteralPath $HostsCsv).ComputerName }
 elseif ($ComputerName) { $targets += $ComputerName }
@@ -226,7 +234,7 @@ foreach($t in $targets){
         ComputerName=$t; Rule=$f.Rule; Severity=$f.Severity; User=$f.User; SourceIp=$f.SourceIp; Workstation=$f.Workstation;
         Count=$f.Count; FirstSeen=$f.FirstSeen; LastSeen=$f.LastSeen; Reason=$f.Reason;
         WindowHours=$pol.windowHours; CollectedAt=[datetime]::UtcNow;
-        Compliance= (if ($f.Severity -in 'Medium','High') {'NonCompliant'} else {'Warn'})
+          Compliance = $( if ($f.Severity -in 'Medium','High') { 'NonCompliant' } else { 'Warn' } )
       }
     }
   }
