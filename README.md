@@ -35,13 +35,13 @@ The policy.json file defines how detection rules behave. For example:
 
 ```
 {
-  "windowHours": 24,
-  "businessHours": { "start": 8, "end": 18, "weekdaysOnly": true },
-  "rules": {
-    "FailedBurstPerIP":   { "enabled": true, "threshold": 10, "minutes": 15, "sev": "Medium" },
-    "FailedBurstPerUser": { "enabled": true, "threshold": 8,  "minutes": 15, "sev": "Medium" },
-    "OffHoursAdmin":      { "enabled": true, "sev": "High" },
-    "NewSourceForUser":   { "enabled": true, "sev": "Low" }
+  "windowHours": 24,  
+  "businessHours": { "start": 8, "end": 18, "weekdaysOnly": true },  
+  "rules": {  
+    "FailedBurstPerIP":   { "enabled": true, "threshold": 10, "minutes": 15, "sev": "Medium" },  
+    "FailedBurstPerUser": { "enabled": true, "threshold": 8,  "minutes": 15, "sev": "Medium" },  
+    "OffHoursAdmin":      { "enabled": true, "sev": "High" },  
+    "NewSourceForUser":   { "enabled": true, "sev": "Low" }  
   }
 }
 ```
@@ -61,8 +61,8 @@ When -UpdateBaseline is used, new trusted sources are added automatically so rep
 
 ```
 {
-  "Administrator": { "IPs": ["10.0.0.10"], "Hosts": ["SERVER01"] },
-  "dthorsnes": { "IPs": ["10.0.0.42"], "Hosts": ["ALFRED"] }
+  "Administrator": { "IPs": ["10.0.0.10"], "Hosts": ["SERVER01"] },  
+  "dthorsnes": { "IPs": ["10.0.0.42"], "Hosts": ["ALFRED"] }  
 }
 ```
 
@@ -70,8 +70,8 @@ When -UpdateBaseline is used, new trusted sources are added automatically so rep
 
 # Output Files
 
-File	| Description
-out.json	| Raw structured anomaly output
-out.csv	| Optional CSV export (via -Csv out.csv)
-reports\LogonReport.html |	Human-readable HTML dashboard
-baseline.json	Persistent | known sources per user
+File	| Description  
+out.json	| Raw structured anomaly output  
+out.csv	| Optional CSV export (via -Csv out.csv)  
+reports\LogonReport.html |	Human-readable HTML dashboard  
+baseline.json	Persistent | known sources per user  
