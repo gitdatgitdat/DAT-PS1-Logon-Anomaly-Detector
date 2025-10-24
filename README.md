@@ -62,7 +62,7 @@ When -UpdateBaseline is used, new trusted sources are added automatically so rep
 ```
 {
   "Administrator": { "IPs": ["10.0.0.10"], "Hosts": ["SERVER01"] },  
-  "dthorsnes": { "IPs": ["10.0.0.42"], "Hosts": ["ALFRED"] }  
+  "gitdatgitdat": { "IPs": ["10.0.0.42"], "Hosts": ["COMPUTER01"] }  
 }
 ```
 
