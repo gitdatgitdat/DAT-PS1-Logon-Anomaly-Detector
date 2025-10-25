@@ -1,0 +1,15 @@
+{
+  "ComputerName": "My-PC",
+  "Rule": "None",
+  "Severity": "Info",
+  "User": "",
+  "SourceIp": "",
+  "Workstation": "",
+  "Count": 0,
+  "FirstSeen": null,
+  "LastSeen": null,
+  "Reason": "No anomalies",
+  "WindowHours": 24,
+  "CollectedAt": "2025-10-23T01:53:29.4762844Z",
+  "Compliance": "Compliant"
+}
