@@ -1,1 +1,14 @@
-null
+{
+  "ops_admin": {
+    "IPs": ["127.0.0.1", "10.10.1.10"],
+    "Hosts": ["ADMIN-WKS01"]
+  },
+  "user_demo": {
+    "IPs": ["10.20.5.42", "192.168.50.12"],
+    "Hosts": ["WS-001", "LAPTOP-007"]
+  },
+  "svc_backup": {
+    "IPs": ["10.30.0.25"],
+    "Hosts": ["BKPSRV01"]
+  }
+}
